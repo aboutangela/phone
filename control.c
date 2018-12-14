@@ -8,6 +8,12 @@
 #include <sys/shm.h>
 #include <string.h>
 
+union semun{
+	int val;
+	struct semid_ds * buf;
+	unsigned short * array;
+};
+
 void create_shared(){
     int f = open("story", O_CREAT | O_TRUNC, 0666);
     int key = ftok(".", 'b');
@@ -24,6 +30,7 @@ void print_story(){
     char * story = calloc(1, 10000);
     read(f, story, 10000);
     printf("%s\n", story);
+		close(f);
 }
 
 void remove_shared(){
@@ -61,3 +68,4 @@ int main( int argc, char * argv[] ){
         print_story();
     }
 }
+
